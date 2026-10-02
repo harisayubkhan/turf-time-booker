@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ManagerRouteImport } from './routes/manager'
+import { Route as VenuesVenueIdRouteImport } from './routes/venues.$venueId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManagerRoute = ManagerRouteImport.update({
+  id: '/manager',
+  path: '/manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VenuesVenueIdRoute = VenuesVenueIdRouteImport.update({
+  id: '/venues/$venueId',
+  path: '/venues/$venueId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/manager': typeof ManagerRoute
+  '/venues/$venueId': typeof VenuesVenueIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/manager': typeof ManagerRoute
+  '/venues/$venueId': typeof VenuesVenueIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/manager': typeof ManagerRoute
+  '/venues/$venueId': typeof VenuesVenueIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/manager' | '/venues/$venueId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/manager' | '/venues/$venueId'
+  id: '__root__' | '/' | '/manager' | '/venues/$venueId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ManagerRoute: typeof ManagerRoute
+  VenuesVenueIdRoute: typeof VenuesVenueIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/manager': {
+      id: '/manager'
+      path: '/manager'
+      fullPath: '/manager'
+      preLoaderRoute: typeof ManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/venues/$venueId': {
+      id: '/venues/$venueId'
+      path: '/venues/$venueId'
+      fullPath: '/venues/$venueId'
+      preLoaderRoute: typeof VenuesVenueIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ManagerRoute: ManagerRoute,
+  VenuesVenueIdRoute: VenuesVenueIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
