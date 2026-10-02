@@ -1,0 +1,4 @@
+- [ ] Build venue discovery with location filtering and navigation.
+- [ ] Build venue booking calendar, confirmation, and session-only state.
+- [ ] Build manager schedule with metrics and temporary actions.
+- [ ] Verify responsive screens and interactions.
