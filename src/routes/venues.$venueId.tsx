@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { addDays, format, startOfWeek } from "date-fns";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, Lightbulb, MapPin, ShieldCheck, Users, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, MapPin, ShieldCheck, Users } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -35,6 +35,12 @@ function VenueDetails() {
   const bookedForDay = reservations.filter((item) => item.venueId === currentVenue.id && item.date === dateKey(selectedDate));
   const availableCount = slotHours.length - bookedForDay.length;
 
+  function changeWeek(direction: number) {
+    const nextOffset = weekOffset + direction;
+    setWeekOffset(nextOffset);
+    setSelectedDate(nextOffset === 0 ? new Date() : addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), nextOffset * 7));
+  }
+
   function confirmBooking() {
     if (selectedHour === null) return;
     const success = reserve(currentVenue.id, dateKey(selectedDate), selectedHour);
@@ -60,7 +66,7 @@ function VenueDetails() {
         <section className="booking-section" aria-labelledby="booking-title">
           <div className="section-top"><div><p className="eyebrow">MAKE IT HAPPEN</p><h2 id="booking-title">Find your time on the pitch<span className="heading-period">.</span></h2><p>Pick a day, grab a slot, and get the squad together.</p></div><span className="duration-note"><Clock3 size={16} /> 60-minute sessions</span></div>
           <div className="calendar-panel">
-            <div className="calendar-header"><div><CalendarDays size={19} /><strong>{format(selectedDate, "MMMM yyyy")}</strong><span className="calendar-week">Week of {format(weekStart, "d MMM")}</span></div><div className="calendar-controls"><Button variant="outline" size="icon" aria-label="Previous week" disabled={weekOffset === 0} onClick={() => setWeekOffset((value) => value - 1)}><ArrowLeft /></Button><Button variant="outline" size="icon" aria-label="Next week" disabled={weekOffset === 3} onClick={() => setWeekOffset((value) => value + 1)}><ArrowRight /></Button></div></div>
+            <div className="calendar-header"><div><CalendarDays size={19} /><strong>{format(selectedDate, "MMMM yyyy")}</strong><span className="calendar-week">Week of {format(weekStart, "d MMM")}</span></div><div className="calendar-controls"><Button variant="outline" size="icon" aria-label="Previous week" disabled={weekOffset === 0} onClick={() => changeWeek(-1)}><ArrowLeft /></Button><Button variant="outline" size="icon" aria-label="Next week" disabled={weekOffset === 3} onClick={() => changeWeek(1)}><ArrowRight /></Button></div></div>
             <div className="calendar-days">{days.map((day) => { const past = dateKey(day) < dateKey(today); const active = dateKey(day) === dateKey(selectedDate); return <Button key={dateKey(day)} variant="ghost" disabled={past} onClick={() => setSelectedDate(day)} className={`day-cell ${active ? "day-cell-active" : ""}`} aria-pressed={active}><span>{format(day, "EEE")}</span><strong>{format(day, "d")}</strong><small>{dateKey(day) === dateKey(today) ? "Today" : "\u00a0"}</small></Button>; })}</div>
           </div>
           <div className="slots-header"><div><h3>{format(selectedDate, "EEEE, d MMMM")}</h3><p>All times are Pakistan Standard Time (PKT)</p></div><span className="available-indicator"><span /> {availableCount} available</span></div>

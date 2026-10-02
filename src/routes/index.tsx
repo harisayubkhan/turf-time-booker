@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, Clock3, MapPin, Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowRight, Clock3, MapPin, Search, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { priceLabel, venues, type Venue } from "@/lib/turf-data";
