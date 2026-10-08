@@ -44,8 +44,8 @@ export function initialReservations(): Reservation[] {
           id: `mock-${day}-${venueIndex}-${item}`,
           venueId: venue.id,
           date: dateKey(addDays(new Date(), day)),
-          hour: slotHours[(day + venueIndex * 2 + item * 3) % slotHours.length],
-          name: names[(day + venueIndex + item) % names.length],
+          hour: slotHours[(day + venueIndex * 2 + item * 3) % slotHours.length] ?? slotHours[0]!,
+          name: names[(day + venueIndex + item) % names.length] ?? names[0]!,
           status: "booked",
         });
       });
