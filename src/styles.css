@@ -205,12 +205,21 @@
 .cost-breakdown > div:first-child { color: var(--muted-foreground); }
 .cost-breakdown .total-line { border-top: 1px solid var(--border); margin-top: 17px; padding-top: 16px; font-size: 15px; font-weight: 800; }
 .total-line strong { font-size: 20px; color: var(--primary); }
-.split-panel { display: flex; gap: 13px; background: var(--soft-green); padding: 18px; border-radius: 5px; margin-top: 21px; }
+.split-panel { display: flex; gap: 13px; background: var(--soft-green); padding: 18px; border-radius: 5px; margin-top: 21px; flex-wrap: wrap; }
 .split-icon { width: 37px; height: 37px; flex: none; border-radius: 4px; display: grid; place-items: center; background: var(--primary); color: var(--lime); }
 .split-panel span { display: block; color: var(--primary); }
+.split-body { flex: 1 1 150px; }
 .split-panel strong { display: block; margin-top: 4px; font: 700 23px "Outfit", sans-serif; color: var(--primary); }
 .split-panel small { font: 500 13px "DM Sans", sans-serif; }
 .split-panel p { margin-top: 2px; font-size: 11px; color: var(--muted-foreground); }
+.split-controls { display: flex; flex-direction: column; gap: 9px; align-items: flex-end; }
+.split-stepper { display: flex; align-items: center; gap: 10px; }
+.split-stepper .btn, .split-stepper button { height: 30px; width: 30px; }
+.split-count { min-width: 30px; text-align: center; font: 800 17px "Outfit", sans-serif; color: var(--primary); font-variant-numeric: tabular-nums; }
+.split-presets { display: flex; gap: 6px; }
+.split-presets .btn, .split-presets button { height: 25px; padding: 0 10px; min-height: 0; font-size: 12px; font-weight: 700; }
+.split-preset-active { background: var(--primary); border-color: var(--primary); color: var(--lime) !important; }
+@media (max-width: 640px) { .split-controls { align-items: stretch; flex: 1 1 100%; } .split-presets { justify-content: center; } }
 .booking-dialog .confirm-button { width: 100%; height: 48px; margin-top: 22px; justify-content: space-between; font-weight: 800; }
 .dialog-disclaimer { margin-top: 12px; text-align: center !important; color: var(--muted-foreground); font-size: 11px; }
 
