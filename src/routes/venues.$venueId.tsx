@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { addDays, format, startOfWeek } from "date-fns";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, MapPin, ShieldCheck, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, MapPin, Minus, Plus, ShieldCheck, Users } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -25,6 +25,7 @@ function VenueDetails() {
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [weekOffset, setWeekOffset] = useState(0);
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
+  const [playerCount, setPlayerCount] = useState(10);
   const today = new Date();
   const weekStart = addDays(startOfWeek(today, { weekStartsOn: 1 }), weekOffset * 7);
   const days = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index));
@@ -80,7 +81,7 @@ function VenueDetails() {
           <div className="dialog-venue"><img src={currentVenue.image} alt="" width={1280} height={850} /><div><strong>{currentVenue.name}</strong><span><MapPin size={13} /> {currentVenue.area}</span></div></div>
           <div className="dialog-detail-grid"><div><span>DATE</span><strong>{format(selectedDate, "EEE, d MMM yyyy")}</strong></div><div><span>TIME</span><strong>{selectedHour !== null ? timeLabel(selectedHour) : ""} – {selectedHour !== null ? timeLabel(selectedHour + 1) : ""}</strong></div></div>
           <div className="cost-breakdown"><div><span>Pitch rental · 60 min</span><strong>{priceLabel(currentVenue.price)}</strong></div><div className="total-line"><span>Total cost</span><strong>{priceLabel(currentVenue.price)}</strong></div></div>
-          <div className="split-panel"><div className="split-icon"><Users size={21} /></div><div><span>SPLIT THE COST</span><strong>{priceLabel(currentVenue.price / 10)} <small>/ player</small></strong><p>Based on 10 players sharing the pitch.</p></div></div>
+          <div className="split-panel"><div className="split-icon"><Users size={21} /></div><div className="split-body"><span>SPLIT THE COST</span><strong>{priceLabel(Math.ceil(currentVenue.price / playerCount))} <small>/ player</small></strong><p>{playerCount} players sharing the pitch.</p></div><div className="split-controls" role="group" aria-label="Number of players sharing the cost"><div className="split-stepper"><Button variant="outline" size="icon" aria-label="Fewer players" disabled={playerCount <= 2} onClick={() => setPlayerCount((count) => Math.max(2, count - 1))}><Minus /></Button><span className="split-count" aria-live="polite">{playerCount}</span><Button variant="outline" size="icon" aria-label="More players" disabled={playerCount >= 22} onClick={() => setPlayerCount((count) => Math.min(22, count + 1))}><Plus /></Button></div><div className="split-presets">{[6, 8, 10, 12].map((preset) => <Button key={preset} variant="outline" size="sm" aria-pressed={playerCount === preset} className={`split-preset ${playerCount === preset ? "split-preset-active" : ""}`} onClick={() => setPlayerCount(preset)}>{preset}</Button>)}</div></div></div>
           <Button size="lg" className="confirm-button" onClick={confirmBooking}>Confirm reservation <ArrowRight /></Button><p className="dialog-disclaimer">Demo booking only · No payment will be taken</p>
         </DialogContent>
       </Dialog>
